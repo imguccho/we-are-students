@@ -12,6 +12,14 @@
       <form class="form-horizontal" [formGroup]="studentForm" (ngSubmit)="addStudent()">
         <div class="modal-body">
 
+          <div class="alert alert-success" *ngIf='success == true'>
+            <strong>Success!</strong> {{messageText}}
+          </div>
+
+          <div class="alert alert-danger" *ngIf='error == true'>
+            <strong>Error!</strong> {{messageText}}
+          </div>
+
             <div class="panel panel-primary">
               <div class="panel-body">
                 <div class="form-group">

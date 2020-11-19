@@ -7,13 +7,17 @@ import { Subject, Subscription } from 'rxjs';
 })
 export class StudentService {
 
+  public messageText: string = 'We are facing a server error. This might be due to poor internet. Please check your connection and try again.';
+
   public loadSubject = new Subject<any>();
   public loadSubject$ = this.loadSubject.asObservable();
 
-  getStudentsListAPI: string = "http://localhost/SM/public/read.php";
-  addStudentAPI: string = "http://localhost/SM/public/create.php";
-  updateStudentAPI: string = "http://localhost/SM/public/update.php";
-  deleteStudentAPI: string = "http://localhost/SM/public/delete.php";
+  baseUrl: string = 'http://localhost/we-are-students-backend/';
+
+  getStudentsListAPI: string = this.baseUrl + "read.php";
+  addStudentAPI: string = this.baseUrl + "create.php";
+  updateStudentAPI: string = this.baseUrl + "update.php";
+  deleteStudentAPI: string = this.baseUrl + "delete.php";
 
   public selected_student = new Subject<any>();
   public selected_student$ = this.selected_student.asObservable();

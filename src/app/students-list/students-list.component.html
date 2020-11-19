@@ -1,4 +1,3 @@
-
 <table class="table table-striped table-bordered table-sm row-border hover students-list" datatable [dtOptions]="dtOptions">
   <thead>
     <tr>
@@ -16,11 +15,11 @@
          <td class="class">{{student.Class}}</td>
          <td class="address">{{student.Address}}</td>
          <td class="actions text-center">
-          <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#collapseExample' + student.RollNumber">Edit</button>
+          <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#studentCollapse' + student.RollNumber">Edit</button>
           <button type="button" class="btn btn-danger" (click)="deleteStudent(student.RollNumber)">Delete</button>
          </td>
 
-        <div class="modal fade" [attr.id]="'collapseExample' + student.RollNumber" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" [attr.id]="'studentCollapse' + student.RollNumber" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -32,6 +31,14 @@
               <form class="form-horizontal" [formGroup]="studentForm" (ngSubmit)="updateStudent(student.Name, student.Class, student.Address, student.RollNumber)">
                 <div class="modal-body">
 
+                  <div class="alert alert-success" *ngIf='success == true'>
+                    <strong>Success!</strong> {{messageText}}
+                  </div>
+        
+                  <div class="alert alert-danger" *ngIf='error == true'>
+                    <strong>Error!</strong> {{messageText}}
+                  </div>
+
                     <div class="panel panel-primary">
                       <div class="panel-body">
                         <div class="form-group">
@@ -42,11 +49,11 @@
                             studentForm.get('Name').dirty) &&
                             studentForm.get('Name').errors)">
                             <span *ngIf="studentForm.get('Name').errors.required">
-                              Name is required
+                              Name is required.
                             </span>
                             <span *ngIf="studentForm.get('Name').errors.minlength ||
                             studentForm.get('Name').errors.maxlength">
-                              Full Name must be greater than 2 characters and less than 50 characters
+                              Full Name must be greater than 2 characters and less than 50 characters.
                             </span>
                           </span>
                         </div>
@@ -61,7 +68,7 @@
                             studentForm.get('Class').dirty) &&
                             studentForm.get('Class').errors)">
                             <span *ngIf="studentForm.get('Class').errors.required">
-                              Class is required
+                              Class is required.
                             </span>
                             <span *ngIf="studentForm.get('Class').errors.min">
                               Class can not be less than 0.
@@ -80,11 +87,11 @@
                             studentForm.get('Address').dirty) &&
                             studentForm.get('Address').errors)">
                             <span *ngIf="studentForm.get('Address').errors.required">
-                              Address is required
+                              Address is required.
                             </span>
                             <span *ngIf="studentForm.get('Address').errors.minlength ||
                             studentForm.get('Address').errors.maxlength">
-                              Address must be less than 50 characters
+                              Address must be less than 50 characters.
                             </span>
                           </span>
                         </div>

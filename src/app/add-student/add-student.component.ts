@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { StudentService } from '../common/student.service';
 @Component({
   selector: 'app-add-student',
@@ -9,10 +9,13 @@ import { StudentService } from '../common/student.service';
 export class AddStudentComponent implements OnInit {
 
   studentForm: FormGroup;
-  student: any;
-  Name: any;
+  messageText: string;
+  success: boolean;
+  error: boolean;
 
-  constructor(private __studentService: StudentService, private fb: FormBuilder) { }
+  constructor(private __studentService: StudentService, private fb: FormBuilder) { 
+    this.messageText = __studentService.messageText;
+  }
 
   ngOnInit() {
 
@@ -35,20 +38,21 @@ export class AddStudentComponent implements OnInit {
 
     this.__studentService.addStudent(this.studentForm.value)
     .subscribe(data=> {
-      console.log(data);
 
-      if(data.success == 'KC001'){ //KC001 - login successfull status code
-        console.log(data);
+      if(data.code == '001'){ //Insert Success
+        this.success = true;
         this.__studentService.invokefetchStudentsList();
       }
-
-      if(data.error){
-
+      else{
+        this.error = true;
       }
+
+      this.__studentService.messageText = data.message;
       this.__studentService.showLoading(false);
 
     },
       (error: any) => {
+        this.error = false;
         this.__studentService.showLoading(false);
       }
     );

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../common/student.service';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-students-list',
@@ -11,37 +11,17 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 
 export class StudentsListComponent implements OnInit {
 
-  public data = [
-    {rollnumber: 1, name: 'Virat Kohli', class: '2', address:'therichpost.com'},
-    {rollnumber: 2, name: 'Ms Dhoni', class: '12', address:'therichpost.com'},
-    {rollnumber: 3, name: 'Suresh Raina', class: '4', address:'therichpost.com'},
-    {rollnumber: 4, name: 'Ajinkya Rahane', class: '3', address:'therichpost.com'},
-    {rollnumber: 5, name: 'Rohit Sharma', class: '1', address:'therichpost.com'},
-    {rollnumber: 6, name: 'Shikhar Dhawan', class: '2', address:'therichpost.com'},
-    {rollnumber: 7, name: 'Ravindra Jadeja', class: '6', address:'therichpost.com'},
-    {rollnumber: 8, name: 'Manish Pandey', class: '11', address:'therichpost.com'},
-    {rollnumber: 9, name: 'Shreyash Iyer', class: '5', address:'therichpost.com'},
-    {rollnumber: 10, name: 'Jasprit Bumrah', class: '7', address:'therichpost.com'},
-    {rollnumber: 11, name: 'Mohammad Shami', class: '10', address:'therichpost.com'},
-    {rollnumber: 12, name: 'Ravichandran Ashwin', class: '9', address:'therichpost.com'},
-    {rollnumber: 13, name: 'Subhman Gill', class: '6', address:'therichpost.com'},
-    {rollnumber: 14, name: 'Cheteswar Pujara', class: '8', address:'therichpost.com'},
-    {rollnumber: 15, name: 'KL Rahul', class: '3', address:'therichpost.com'},
-    {rollnumber: 16, name: 'Mayank Agarwal', class: '9', address:'therichpost.com'}
-  ]
-
   students: any;
   title = 'angulardatatables';
   dtOptions: DataTables.Settings = {};
-
-  selected_student: any;
-
+  messageText: string;
   studentForm: FormGroup;
+  success: boolean;
+  error: boolean;
 
   constructor(private __studentService: StudentService, private fb: FormBuilder) {
-    this.__studentService.selected_student.subscribe(selected_student => {
-      this.selected_student = selected_student;
-    })
+    this.getStudentsList();
+    this.messageText = __studentService.messageText;
   }
 
   ngOnInit() {
@@ -69,8 +49,6 @@ export class StudentsListComponent implements OnInit {
       });
     }
 
-    this.getStudentsList();
-
   }
 
   getStudentsList(){
@@ -80,14 +58,8 @@ export class StudentsListComponent implements OnInit {
     this.__studentService.getStudentsList()
     .subscribe(data=> {
 
-      if(data.code == "006"){ //KC001 - login successfull status code
-        console.log(data);
+      if(data.code == "006"){ //Result Send
         this.students = data.payload;
-        console.log(this.students);
-
-      }
-
-      if(data.error){
       }
 
       this.__studentService.showLoading(false);
@@ -108,20 +80,20 @@ export class StudentsListComponent implements OnInit {
 
     this.__studentService.deleteStudent(dataset)
     .subscribe(data=> {
-      console.log(data);
 
-      if(data.code == '008'){ //KC001 - login successfull status code
-
-        //this.getStudentsList();
+      if(data.code == '008'){ //Delete Success
+        this.success = true;
+        this.getStudentsList();
       }
-
-      if(data.error){
-
+      else{
+        this.error = true;
       }
+      this.__studentService.messageText = data.message;
       this.__studentService.showLoading(false);
 
     },
       (error: any) => {
+        this.error = true;
         this.__studentService.showLoading(false);
       }
     );
@@ -139,21 +111,20 @@ export class StudentsListComponent implements OnInit {
 
     this.__studentService.updateStudent(dataset)
     .subscribe(data=> {
-      console.log(data);
 
-      if(data.success == 'KC001'){ //KC001 - login successfull status code
-        console.log(data);
+      if(data.code == '016'){ //Update Success
+        this.success = true;
         this.getStudentsList();
       }
-
-      if(data.error){
-
+      else{
+        this.error = true;
       }
-
+      this.__studentService.messageText = data.message;
       this.__studentService.showLoading(false);
 
     },
       (error: any) => {
+        this.error = true;
         this.__studentService.showLoading(false);
       }
     );
