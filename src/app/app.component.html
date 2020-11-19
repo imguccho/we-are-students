@@ -1,0 +1,20 @@
+<router-outlet></router-outlet>
+
+<nav class="navbar navbar-light bg-light">
+  <span class="navbar-brand mb-0 h1">Student Management</span>
+</nav>
+
+<div class="loader-container" *ngIf="showPageLoading">
+  <img src="../assets/images/loader.gif" />
+</div>
+
+
+<div class="container">
+  <app-add-student></app-add-student>
+  <div class="row">
+    <div class="col">
+
+      <app-students-list></app-students-list>
+    </div>
+  </div>
+</div>

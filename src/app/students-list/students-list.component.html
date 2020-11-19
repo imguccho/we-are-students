@@ -1,0 +1,105 @@
+
+<table class="table table-striped table-bordered table-sm row-border hover students-list" datatable [dtOptions]="dtOptions">
+  <thead>
+    <tr>
+      <th>Roll Number</th>
+      <th>Name</th>
+      <th>Class</th>
+      <th>Address</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+   <tr *ngFor="let student of students">
+         <td class="rollnumber">{{student.RollNumber}}</td>
+         <td class="name">{{student.Name}}</td>
+         <td class="class">{{student.Class}}</td>
+         <td class="address">{{student.Address}}</td>
+         <td class="actions text-center">
+          <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#collapseExample' + student.RollNumber">Edit</button>
+          <button type="button" class="btn btn-danger" (click)="deleteStudent(student.RollNumber)">Delete</button>
+         </td>
+
+        <div class="modal fade" [attr.id]="'collapseExample' + student.RollNumber" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Update Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form class="form-horizontal" [formGroup]="studentForm" (ngSubmit)="updateStudent(student.Name, student.Class, student.Address, student.RollNumber)">
+                <div class="modal-body">
+
+                    <div class="panel panel-primary">
+                      <div class="panel-body">
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="Name">Name</label>
+                          <input id="Name" type="text" class="form-control" formControlName="Name" value="{{student.Name}}">
+                          <span class="help-block"
+                            *ngIf="((studentForm.get('Name').touched ||
+                            studentForm.get('Name').dirty) &&
+                            studentForm.get('Name').errors)">
+                            <span *ngIf="studentForm.get('Name').errors.required">
+                              Name is required
+                            </span>
+                            <span *ngIf="studentForm.get('Name').errors.minlength ||
+                            studentForm.get('Name').errors.maxlength">
+                              Full Name must be greater than 2 characters and less than 50 characters
+                            </span>
+                          </span>
+                        </div>
+
+
+
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="Class">Class</label>
+                          <input id="Class" type="number" class="form-control" formControlName="Class" value="{{student.Class}}">
+                          <span class="help-block"
+                            *ngIf="((studentForm.get('Class').touched ||
+                            studentForm.get('Class').dirty) &&
+                            studentForm.get('Class').errors)">
+                            <span *ngIf="studentForm.get('Class').errors.required">
+                              Class is required
+                            </span>
+                            <span *ngIf="studentForm.get('Class').errors.min">
+                              Class can not be less than 0.
+                            </span>
+                            <span *ngIf="studentForm.get('Class').errors.max">
+                              Class can not be more than 12.
+                            </span>
+                          </span>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="Address">Address</label>
+                          <textarea class="form-control" id="Address" rows="3" formControlName="Address" value="{{student.Address}}"></textarea>
+                          <span class="help-block"
+                            *ngIf="((studentForm.get('Address').touched ||
+                            studentForm.get('Address').dirty) &&
+                            studentForm.get('Address').errors)">
+                            <span *ngIf="studentForm.get('Address').errors.required">
+                              Address is required
+                            </span>
+                            <span *ngIf="studentForm.get('Address').errors.minlength ||
+                            studentForm.get('Address').errors.maxlength">
+                              Address must be less than 50 characters
+                            </span>
+                          </span>
+                        </div>
+
+                      </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" type="submit">ADD</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+     </tr>
+  </tbody>
+</table>

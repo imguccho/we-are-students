@@ -1,0 +1,27 @@
+table.students-list tr td, table.students-list tr th{
+  text-align: center;
+}
+
+table.students-list tr td.rollnumber{
+  width: 15%;
+}
+
+table.students-list tr td.name{
+  width: 25%;
+}
+
+table.students-list tr td.class{
+  width: 10%;
+}
+
+table.students-list tr td.address{
+  width: 30%;
+}
+
+table.students-list tr td.actions{
+  width: 20%;
+}
+
+table.students-list button{
+  margin: 0 5px;
+}
