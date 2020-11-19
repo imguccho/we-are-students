@@ -70,7 +70,7 @@
     } 
     else {
         $response['code']='007';
-        $response['message']='Namw Already Exist';
+        $response['message']='Name Already Exist';
     } 
     echo json_encode($response);
     exit;
